@@ -282,12 +282,8 @@ function deleteClause(ev) {
         currentIds.splice(idx, 1);
         to_remove.push($('#' + id).find('span').text().replace(/#/g, ""));
         droped_div = [];
-        console.log("delete = " + droped_div)
-        // droped_div.push($('#' + id).find('span').text().replace(/#/g, "") + " prout");
-
     }
     update(currentIds);
-    // }
 }
 
 function addClause(ev) {
@@ -460,9 +456,6 @@ function escapeHtml (string) {
 
 $('#cmd').click(function () {
     getValues();
-    console.log(values)
-    console.log(ids)
-    console.log(o[convention_type])
     $.ajax({
         type:'GET',
         url: "deleteconvention.php",
@@ -516,7 +509,7 @@ $('#cmd').click(function () {
             alert(xhr.status+': '+thrownError);
         }
     });
-    // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=Nothing">');
+    $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=Nothing">');
 });
 
 </script>

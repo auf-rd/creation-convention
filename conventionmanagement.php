@@ -10,7 +10,7 @@ echo "<div class='alert alert-info'>
 </div>";
     }
     else if ($_GET['addconvok'] == "TypeModified") {
-echo "<div class='alert alert-info'>
+echo "<div class='alert alert-success'>
   <strong>Succès!</strong> Le type de convention a bien été enregistrée.
 </div>"; 
     }
@@ -100,7 +100,6 @@ $(document).ready(function() {
                         data: {table: "clauses", field: "*", where: " id='" + val['id'] + "';"},
                         async: false,
                         success: function( data ) {
-                            console.log("dqtq" + data)
                             jQuery.each(JSON.parse(data), function(i, clause) {
                                 var content = clause['content'];
                                 var editable = (clause['editable'] == 1) ? 'editable' : '';
@@ -258,7 +257,6 @@ function removeElementsByClass(className){
 }
 
 $('.checkAll').click(function(e) {
-    console.log(e);
 });
 
 $('#cmd').click(function () {

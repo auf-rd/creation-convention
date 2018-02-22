@@ -187,7 +187,6 @@ function removeElementsByClass(className){
 }
 
 $('.checkAll').click(function(e) {
-    console.log(e);
 });
 
 $('#cmd').click(function () {
@@ -199,7 +198,6 @@ $('#cmd').click(function () {
         url: "addType.php",
         data: {table: 'convention__type_convention ', values: "('" + $('#convention-type').val().toString() + "')"},
         success: function( data ) {
-            console.log(data)
             jQuery.each(values, function(i, val) {
                 $.ajax({
                     type:'GET',

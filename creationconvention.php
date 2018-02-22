@@ -34,7 +34,6 @@ $(document).ready(function() {
         success: function( data ) {
             $q = "<div class='choice_box' data-placeholder='Select Your Options' id='convention_choice'><select id='choice' style='width: 200px;' class='chosen-select'><option> </option>";
             jQuery.each(JSON.parse(data), function(i, val) {
-                console.log(val);
                 o[val['label']] = val['id'];
                 $d = val['label'];
                 $q += ('<option value=' + $d + '>' + $d + '</option>');
@@ -45,9 +44,7 @@ $(document).ready(function() {
                 placeholder_text_single: "Sélectionnez le type de votre convention",
                 no_results_text: "Oops, nothing found!"
             });
-            console.log(o);
             convention_type = $('#choice_chosen').find(".chosen-single").text();
-            console.log(convention_type);
         },
         error:function (xhr, ajaxOptions, thrownError){
             alert(xhr.status+': '+thrownError);
@@ -69,7 +66,6 @@ $(document).ready(function() {
             url: "getData.php",
             data: {table: "type_convention_clause", field: "*", where: 'id_type_convention=' + o[convention_type], order_by: "clause_order"},
             success: function( data ) {
-                console.log(data)
                 jQuery.each(JSON.parse(data), function(i, val) {
                     $.ajax({
                         type:'GET',
@@ -78,7 +74,6 @@ $(document).ready(function() {
                         async: false,
                         success: function( data ) {
                             jQuery.each(JSON.parse(data), function(i, clause) {
-                                console.log(clause)
                                 var span = clause['content'].match(/#[^#]*#/g);
                                 var content = clause['content'];
                                 var editable = (clause['editable'] == 1) ? 'editable' : '';
@@ -87,36 +82,27 @@ $(document).ready(function() {
                                 var options = "<select class='form-control' class='statut-clause' id='form-control" + val['id_clause'] + "'><option selected='selected'>" + status + "</option><option>" + required + "</option></select>"
                                 var closeBtn = "<button id='close" + val['id_clause'] + "' onclick='deleteClause(event)'>Supprimer</button>";
                                 var addBtn = "<button onclick='addClause(event)'>Ajouter</button>";
-                                console.log('content   ' + content)
-                                console.log('span   ' + span)
                                 if (span) {
-                                jQuery.each(span, function(index, value) {
-                                    console.log('content = ' + content)
-                                    content = content.replace(value, "<span id='" + val['id_clause'] + "' class='" + value.replace(/#/g, "") + val['id_clause'] + " prout'>" + value + "</span>");
-                                    console.log("value = " + value)
-                                    console.log(content)
-                                });
-                            }
-                                
+                                    jQuery.each(span, function(index, value) {
+                                        content = content.replace(value, "<span id='" + val['id_clause'] + "' class='" + value.replace(/#/g, "") + val['id_clause'] + " prout'>" + value + "</span>");
+                                    });
+                                }
                                 var editable = (clause['editable'] == 1) ? 'editable' : '';
                                 content = "<div class='clause " + editable + "'onclick=textedit()  draggable='true' ondragstart='drag(event)' id='clause" + val['id_clause'] + "'>" + content + "</div>";
                                     content = "<div class='row' id=" + val['id_clause'] + "><div class='col-md-10 clauses '  id='" + val['id_clause'] + "'><h3>Clause " + val['id_clause'] + "</h3>" + content + "</div><div class='col-md-2 options'>" + options + closeBtn + "</div></div>";
                                     $("#accordion").append(content);
-
-                                    var txt = document.getElementById("clause" + val['id_clause']);
-                                    jQuery.each($(txt).children(), function(i, val) {
-                                        console.log(val)
-                                        if (val.className) {
-                                            currentId = val.className;
-                                            if ($.inArray(currentId, ids) == -1) {
-                                                currentIds.push(currentId.replace(/\d+/g, ''));
-                                                ids.push(val.className.replace(/#/g, ""));
-                                            }
+                                var txt = document.getElementById("clause" + val['id_clause']);
+                                jQuery.each($(txt).children(), function(i, val) {
+                                    if (val.className) {
+                                        currentId = val.className;
+                                        if ($.inArray(currentId, ids) == -1) {
+                                            currentIds.push(currentId.replace(/\d+/g, ''));
+                                            ids.push(val.className.replace(/#/g, ""));
                                         }
-                                    });
-                                    console.log("currentIds" + currentIds)
-                                        update(currentIds);
-                                        clauses_id.push(val['id']);
+                                    }
+                                });
+                                update(currentIds);
+                                clauses_id.push(val['id']);
                             });
                         },
                         error:function (xhr, ajaxOptions, thrownError){
@@ -271,17 +257,14 @@ function removeElementsByClass(className){
 function update(elems) {
     jQuery.each(elems, function(i, val) {
         if ($.inArray(val, droped_div) != -1) {
-            console.log('return');
             return ;
         }
         droped_div.push(val);
-        console.log("prout!!!!" + currentIds)
         $.ajax({
             type:'GET',
             url: "getData.php",
             data: {table: currentIds[i].replace(/#/g, ""), field: "nom", prefix: "dbauf__ref_"},
             success: function( data ) {
-                console.log('box' + elems[i]);
                 var id = elems[i].split(' ')[0] + "-box";
                 $q = "<div class='choice_box' id=" + id + "><select id='choice' style='width: 200px;'' class='chosen-select'>";
                 jQuery.each(JSON.parse(data), function(i, val) {
@@ -301,15 +284,10 @@ function update(elems) {
 }
 
 $('.checkAll').click(function(e) {
-    console.log(e);
 });
 
 $('#cmd').click(function () {
     getValues();
-    console.log(values);
-    console.log(ids);
-    console.log(clauses_id);
-    console.log(currentIds);
     $.ajax({
         type:'GET',
         url: "addConvention.php",
@@ -325,18 +303,14 @@ $('#cmd').click(function () {
                     data: {table: "convention__clause_param", field: " (id_convention, id_clause, parameter, value) ", values: values},
                     async: false,
                     success: function( data ) {
-                        console.log(data)
                         
                     },
                     error:function (xhr, ajaxOptions, thrownError){
-                        alert(xhr.status+': '+thrownError);
-                        // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
+                        $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
                     }
                 });
             });
             jQuery.each($('#accordion').find('.editable'), function(i, val) {
-                console.log("editable : " + val.id.replace("clause", ""));
-                console.log(val.innerHTML);
                 $.ajax({
                     type:'GET',
                     url: "addConvention.php",
@@ -345,8 +319,7 @@ $('#cmd').click(function () {
                     success: function( data ) {                        
                     },
                     error:function (xhr, ajaxOptions, thrownError){
-                        // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
-                        // alert(xhr.status+': '+thrownError);
+                        $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
                     }
                 });
             })
@@ -356,7 +329,7 @@ $('#cmd').click(function () {
             alert(xhr.status+': '+thrownError);
         }
     });
-    // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=True">');
+    $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=True">');
 });
 
 </script>
