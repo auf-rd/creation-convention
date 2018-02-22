@@ -38,14 +38,14 @@ $(document).ready(function() {
     $.ajax({
         type:'GET',
         url: "getData.php",
-        data: {prefix: "convention", field: "*"},
+        data: {prefix: "convention__conventions", field: "*"},
         async: false,
         success: function( data ) {
             $q = "<div class='choice_box' data-placeholder='Select Your Options' id='convention_choice'><select id='choice' style='width: 200px;' class='chosen-select'><option> </option>";
             jQuery.each(JSON.parse(data), function(i, val) {
-                o[val['code_auf']] = val['id'];
+                o[val['nom']] = val['id'];
                 $t = val['id_type_document'];
-                $d = val['code_auf'];
+                $d = val['nom'];
                 $q += ('<option class=' + $t + ' value=' + $d + '>' + $d + '</option>');
             });
             $q += '</select></div><br/><br/>';
@@ -71,7 +71,7 @@ $(document).ready(function() {
         $.ajax({
             type:'GET',
             url: "getData.php",
-            data: {prefix: "convention", field: "id_type_document", where: "id=" + parseInt(o[convention_type])},
+            data: {prefix: "convention__covnentions", field: "id_type_document", where: "id=" + parseInt(o[convention_type])},
             async: false,
             success: function( data ) {
                 jQuery.each(JSON.parse(data), function(i, val) {

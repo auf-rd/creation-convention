@@ -313,7 +313,7 @@ $('#cmd').click(function () {
     $.ajax({
         type:'GET',
         url: "addConvention.php",
-        data: {table: "convention", field: " (code_auf, id_type_document) ", values: "('" + $('#convention-type').val() + "', " + parseInt(o[convention_type]) + ")"},
+        data: {table: "convention__conventions", field: " (nom, id_type_document) ", values: "('" + $('#convention-type').val() + "', " + parseInt(o[convention_type]) + ")"},
         async: false,
         success: function( data ) {
             jQuery.each(ids, function(i, val) {
@@ -330,7 +330,7 @@ $('#cmd').click(function () {
                     },
                     error:function (xhr, ajaxOptions, thrownError){
                         alert(xhr.status+': '+thrownError);
-                        $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
+                        // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
                     }
                 });
             });
@@ -345,8 +345,8 @@ $('#cmd').click(function () {
                     success: function( data ) {                        
                     },
                     error:function (xhr, ajaxOptions, thrownError){
-                        $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
-                        alert(xhr.status+': '+thrownError);
+                        // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=False">');
+                        // alert(xhr.status+': '+thrownError);
                     }
                 });
             })
@@ -356,7 +356,7 @@ $('#cmd').click(function () {
             alert(xhr.status+': '+thrownError);
         }
     });
-    $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=True">');
+    // $('head').append('<meta http-equiv="refresh" content="0;URL=./conventionmanagement.php?addconvok=True">');
 });
 
 </script>
